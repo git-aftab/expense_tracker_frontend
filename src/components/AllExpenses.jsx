@@ -1,9 +1,13 @@
-import React from 'react'
+import { useState } from "react";
+import axios from "axios";
 
 const AllExpenses = () => {
-  return (
-    <div>AllExpenses</div>
-  )
-}
+  const [expenses, setExpenses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [filterCategory, setFilterCategory] = useState("All");
+  const [message, setMessage] = useState({ type: "", text: "" });
 
-export default AllExpenses
+  return <div>AllExpenses</div>;
+};
+
+export default AllExpenses;
