@@ -136,9 +136,11 @@ const AllExpenses = () => {
               onChange={(e) => setFilterCategory(e.target.value)}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             >
-                {categories.map((cat)=>(
-                    <option value={cat} key={cat}>{cat}</option>
-                ))}
+              {categories.map((cat) => (
+                <option value={cat} key={cat}>
+                  {cat}
+                </option>
+              ))}
             </select>
           </div>
 
@@ -152,21 +154,101 @@ const AllExpenses = () => {
       {/* Expense Table */}
       {filteredExpenses.length > 0 ? (
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="overflow-x-auto">
-                <table className="w-full">
-                    <thead className="bg-linear-to-r from-purple-600 to-blue-600 text-white">
-                        <tr>
-                            <th className="px-6 py-4 text-left text-sm font-semibold">Date</th>
-                            <th className="px-6 py-4 text-left text-sm font-semibold">Category</th>
-                            <th className="px-6 py-4 text-left text-sm font-semibold">Description</th>
-                            <th className="px-6 py-4 text-right text-sm font-semibold">Amount</th>
-                            <th className="px-6 py-4 text-center text-sm font-semibold">Actions</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-linear-to-r from-purple-600 to-blue-600 text-white">
+                <tr>
+                  <th className="px-6 py-4 text-left text-sm font-semibold">
+                    Date
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold">
+                    Category
+                  </th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold">
+                    Description
+                  </th>
+                  <th className="px-6 py-4 text-right text-sm font-semibold">
+                    Amount
+                  </th>
+                  <th className="px-6 py-4 text-center text-sm font-semibold">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {filteredExpenses.map((expense, index) => (
+                  <tr
+                    key={expense.id}
+                    className={`hover:bg-gray-50 transition ${
+                      index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                    }`}
+                  >
+                    <td className="px-6 py-4 text-sm text-gray-700">
+                      {expense.date}
+                    </td>
+                    <td className="px-6 py-4">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                        {expense.category}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-sm text-gray-700">
+                      {expense.description}
+                    </td>
+                    <td className="px-6 py-4 text-right text-sm font-semibold text-gray-900">
+                      ₹{expense.amount}
+                    </td>
+                    <td className="px-6 py-4 text-center">
+                      <button
+                        onClick={() => handleDelete(expense.id)}
+                        className="text-red-600 hover:text-red-800 font-medium transition"
+                        title="Delete expense"
+                      >
+                        <svg
+                          className="w-5 h-5 inline"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                          />
+                        </svg>
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      ):('')}
+      ) : (
+        <div className="bg-white rounded-xl shadow-lg p-12 text-center">
+          <svg
+            className="w-24 h-24 mx-auto text-gray-300 mb-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
+          </svg>
+          <h3 className="text-xl font-semibold text-gray-700 mb-2">
+            No expenses found
+          </h3>
+          <p className="text-gray-500">
+            {filterCategory === "All"
+              ? "Start adding expenses to see them here!"
+              : `No expenses in "${filterCategory}" category.`}
+          </p>
+        </div>
+      )}
     </div>
   );
 };
