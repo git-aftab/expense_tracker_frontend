@@ -59,7 +59,7 @@ const AllExpenses = () => {
   const filteredExpenses =
     filterCategory === "All"
       ? expenses
-      : expenses.flilter((exp) => exp.catergory === filterCategory);
+      : expenses.filter((exp) => exp.category.toLowerCase() === filterCategory.toLowerCase());
 
   const totalAmount = filteredExpenses.reduce(
     (sum, exp) => sum + exp.amount,
