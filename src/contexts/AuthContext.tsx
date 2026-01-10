@@ -6,13 +6,14 @@ import {
   ReactNode,
   Children,
 } from "react";
-import api from "../utils/api";
+import api from '../utils/api';
 import {
   User,
   AuthResponse,
   LoginCredentials,
   RegisterCredentials,
 } from "../types";
+import { useNavigate } from "react-router-dom";
 
 interface AuthContextTypes {
   user: User | null;
@@ -25,9 +26,10 @@ interface AuthContextTypes {
 
 const AuthContext = createContext<AuthContextTypes | undefined>(undefined);
 
-export const Authprovider = ({ Children }: { Children: ReactNode }) => {
+export const Authprovider = ({ children }: { children: ReactNode }) => {
   const [user, setuser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   // Check if user is logged in on mount;
   useEffect(() => {
@@ -73,6 +75,7 @@ export const Authprovider = ({ Children }: { Children: ReactNode }) => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     setuser(null);
+    navigate('/login')
   };
 
   const value = {
@@ -84,7 +87,7 @@ export const Authprovider = ({ Children }: { Children: ReactNode }) => {
     isAuthenticated: !!user,
   };
 
-  return <AuthContext.Provider value={value}>{Children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuth = () => {

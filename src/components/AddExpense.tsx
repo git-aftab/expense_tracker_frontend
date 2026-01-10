@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import api from '../utils/api';
+import { CATEGORIES } from '../types';
 
 function AddExpense() {
   const navigate = useNavigate();
@@ -13,22 +14,22 @@ function AddExpense() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
 
-  const categories = ['Food', 'Transport', 'Entertainment', 'Shopping', 'Bills', 'Health', 'Other'];
+  const categories = CATEGORIES;
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e:any) => {
     e.preventDefault();
     setLoading(true);
     setMessage({ type: '', text: '' });
 
     try {
-      const response = await axios.post('http://localhost:3000/expenses', {
+      const response = await api.post('/expenses', {
         amount: parseFloat(formData.amount),
         category: formData.category,
         description: formData.description,
@@ -129,7 +130,7 @@ function AddExpense() {
               value={formData.description}
               onChange={handleChange}
               required
-              rows="3"
+              rows={3}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
               placeholder="What was this expense for?"
             />

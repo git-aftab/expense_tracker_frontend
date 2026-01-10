@@ -23,12 +23,15 @@ const Login = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Submitting...")
+    console.log('form Data:',formData)
     setLoading(true);
     seterror("");
 
     try {
       await login(formData);
-      navigate("/dashboard");
+      console.log("Login successfull")
+      navigate('/dashboard');
     } catch (error: any) {
       seterror(error.message);
     } finally {

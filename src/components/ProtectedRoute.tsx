@@ -18,3 +18,5 @@ const protectedRoute = ({children}: protectedRouteProps) =>{
         )
     } 
 }
+
+export default protectedRoute

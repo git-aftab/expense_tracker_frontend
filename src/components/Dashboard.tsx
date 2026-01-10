@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import {
   PieChart,
   Pie,
@@ -7,7 +6,11 @@ import {
   ResponsiveContainer,
   Legend,
   Tooltip,
+  PieLabelRenderProps,
 } from "recharts";
+import { useAuth } from "../contexts/AuthContext";
+import api from "../utils/api";
+import { Expense } from "../types";
 
 const COLORS = [
   "#8b5cf6",
@@ -19,7 +22,9 @@ const COLORS = [
 ];
 
 function Dashboard() {
-  const [expenses, setExpenses] = useState([]);
+  console.log("heading to dashboard now")
+  const { user } = useAuth();
+  const [expenses, setExpenses] = useState<Expense[]>([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -29,11 +34,11 @@ function Dashboard() {
 
   const fetchExpenses = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/expenses");
+      const response = await api.get("/expenses");
       setExpenses(response.data.expenses);
 
       const total = response.data.expenses.reduce(
-        (sum, exp) => sum + exp.amount,
+        (sum: number, exp: Expense) => sum + exp.amount,
         0
       );
       setTotalAmount(total);
@@ -46,8 +51,8 @@ function Dashboard() {
 
   // Group expenses by category for pie chart
   const getCategoryData = () => {
-    const categoryMap = {};
-    expenses.forEach((expense) => {
+    const categoryMap: { [key: string]: number } = {};
+    expenses.forEach((expense: Expense) => {
       if (categoryMap[expense.category]) {
         categoryMap[expense.category] += expense.amount;
       } else {
@@ -77,6 +82,11 @@ function Dashboard() {
       <div className="text-center">
         <h1 className="text-4xl font-bold text-gray-800 mb-2">
           Expense Dashboard
+          {user?.isPremium && (
+            <span className="ml-3 inline-block bg-linear-to-r from-yellow-400 to-yellow-600 text-white text-sm font-semibold px-3 py-1 rounded-full">
+              ✨ Premium
+            </span>
+          )}
         </h1>
         <p className="text-gray-600">Track your spending at a glance</p>
       </div>
@@ -182,14 +192,14 @@ function Dashboard() {
                 cx="50%"
                 cy="50%"
                 labelLine={false}
-                label={({ name, percent }) =>
-                  `${name}: ${(percent * 100).toFixed(0)}%`
+                label={({ name, percent }: PieLabelRenderProps) =>
+                  `${name}: ${((percent ?? 0) * 100).toFixed(0)}%`
                 }
                 outerRadius={120}
                 fill="#8884d8"
                 dataKey="value"
               >
-                {categoryData.map((entry, index) => (
+                {categoryData.map((entry: any, index: number) => (
                   <Cell
                     key={`cell-${index}`}
                     fill={COLORS[index % COLORS.length]}
@@ -235,9 +245,9 @@ function Dashboard() {
             {expenses
               .slice(-5)
               .reverse()
-              .map((expense) => (
+              .map((expense: Expense) => (
                 <div
-                  key={expense.id}
+                  key={expense._id}
                   className="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
                 >
                   <div className="flex items-center space-x-4">
