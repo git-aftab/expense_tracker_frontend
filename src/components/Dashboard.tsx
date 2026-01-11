@@ -29,6 +29,7 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("fetching expenses")
     fetchExpenses();
   }, []);
 
@@ -36,11 +37,15 @@ function Dashboard() {
     try {
       const response = await api.get("/expenses");
       setExpenses(response.data.expenses);
+      console.log(response)
+      console.log(response.data)
+      console.log(response.data.expenses)
 
       const total = response.data.expenses.reduce(
         (sum: number, exp: Expense) => sum + exp.amount,
         0
       );
+      console.log(total)
       setTotalAmount(total);
       setLoading(false);
     } catch (error) {

@@ -112,6 +112,7 @@ function AppRoutes() {
             path="/register" 
             element={isAuthenticated ? <Navigate to="/dashboard" /> : <Register />} 
           />
+          <Route path="/test" element={<div className="p-8 text-4xl text-red-600">TEST ROUTE WORKS! ✅</div>} />
           <Route
             path="/dashboard"
             element={

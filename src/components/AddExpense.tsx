@@ -45,7 +45,7 @@ function AddExpense() {
       });
 
       setTimeout(() => {
-        navigate('/');
+        navigate('/add');
       }, 1500);
     } catch (error) {
       setMessage({ type: 'error', text: 'Failed to add expense. Please try again.' });

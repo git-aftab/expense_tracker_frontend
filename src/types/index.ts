@@ -44,7 +44,7 @@ export interface AddExpenseData {
 }
 
 // Category Type
-export type Category = 'Food' | 'Transport' | 'Entertainment' | 'Shopping' | 'Bills' | 'Health' | 'Other';
+export type Category = 'Food' | 'Transport' | 'Entertainment' | 'Shopping' | 'Bills' | 'Health' | 'Others';
 
 export const CATEGORIES: Category[] = [
     'Food',
@@ -53,7 +53,7 @@ export const CATEGORIES: Category[] = [
     'Shopping',
     'Bills',
     'Health',
-    'Other'
+    'Others'
 ]
 
 // Payment Types
